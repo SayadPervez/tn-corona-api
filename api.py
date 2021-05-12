@@ -1,4 +1,5 @@
 import requests
+from datetime import datetime
 
 dict={'5ea0abd3d43ec2250a483a4f': 'ariyalur', '5ea0abd4d43ec2250a483a61': 'chengalpattu', '5ea0abd2d43ec2250a483a40': 'chennai', '5ea0abd3d43ec2250a483a4a': 'coimbatore', '5ea0abd3d43ec2250a483a50': 'cuddalore', '5ea0abd2d43ec2250a483a43': 'dharmapuri', '5ea0abd3d43ec2250a483a4b': 'dindigul', '5ea0abd2d43ec2250a483a48': 'erode', '5ea0abd4d43ec2250a483a5f': 'kallakurichi', '5ea0abd2d43ec2250a483a41': 'kancheepuram', '5ea0abd3d43ec2250a483a5c': 'kanniyakumari', '5ea0abd3d43ec2250a483a4c': 'karur', '5ea0abd3d43ec2250a483a5d': 'krishnagiri', '5ea0abd3d43ec2250a483a56': 'madurai', '60901c5f2481a4362891d572': 'mayiladuthurai', '5ea0abd3d43ec2250a483a51': 'nagapattinam', '5ea0abd2d43ec2250a483a47': 'namakkal', '5ea0abd3d43ec2250a483a49': 'nilgiris', '5ea0abd3d43ec2250a483a4e': 'perambalur', '5ea0abd3d43ec2250a483a54': 'pudukkottai', '5ea0abd3d43ec2250a483a59': 'ramanathapuram', '5ea0abd4d43ec2250a483a63': 'ranipet', '5ea0abd2d43ec2250a483a46': 'salem', '5ea0abd3d43ec2250a483a55': 'sivagangai', '5ea0abd4d43ec2250a483a60': 'tenkasi', '5ea0abd3d43ec2250a483a53': 'thanjavur', '5ea0abd3d43ec2250a483a57': 'theni', '5ea0abd3d43ec2250a483a4d': 'thiruchirappalli', '5ea0abd4d43ec2250a483a62': 'thirupathur', '5ea0abd3d43ec2250a483a52': 'thiruvarur', '5ea0abd3d43ec2250a483a5a': 'thoothukudi', '5ea0abd3d43ec2250a483a5b': 'tirunelveli', '5ea0abd4d43ec2250a483a5e': 'tiruppur', '5ea0abd1d43ec2250a483a3f': 'tiruvallur', '5ea0abd2d43ec2250a483a44': 'tiruvannamalai', '5ea0abd2d43ec2250a483a42': 'vellore', '5ea0abd2d43ec2250a483a45': 'villupuram', '5ea0abd3d43ec2250a483a58': 'virudhunagar'}
 
@@ -32,7 +33,19 @@ def RUN(district):
             result_list = object['result']
 
             for _ in result_list:
-                (ret["Hospitals"])[(_["Name"]).replace(",","-")]={"Hospital Name":(_["Name"]).replace(",","-"),"District Name":(_["District"])["Name"],"Total Vacant Beds":str((_["CovidBedDetails"])["TotalVaccantBeds"])}
+                (ret["Hospitals"])[(_["Name"]).replace(",","-")]={"Hospital Name":(_["Name"]).replace(",","-"),
+                "District Name":(_["District"])["Name"],
+                "Total Vacant Beds":((_["CovidBedDetails"])["TotalVaccantBeds"]),
+                "LandLine number":str(_["Landline"]),
+                "Mobile number":str(_["MobileNumber"]),
+                "facilityType":_["FacilityType"],"Category":(_["Type"])["Name"],
+                "primaryContactPerson":_['PrimaryContactPerson'],
+                "VaccantO2Beds":(_["CovidBedDetails"])["VaccantO2Beds"],
+                "VaccantNonO2Beds":(_["CovidBedDetails"])["VaccantNonO2Beds"],
+                "VaccantICUBeds":(_["CovidBedDetails"])["VaccantICUBeds"],
+                "Address":(_["AddressDetail"]),
+                "updatedAt":datetime.fromtimestamp((_["CovidBedDetails"])["UpdatedOn"]),
+                }
         return(ret)
     except Exception as e:
         return({"Error":str(e)})
